@@ -2,21 +2,24 @@
   max-width: 900px;
   margin: 30px auto;
   padding: 25px;
-  background: #fefefe;
+  background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .titulo {
   text-align: center;
-  color: #0077cc;
+  color: #1d4ed8;
   margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: bold;
 }
 
 .factura-form {
-  background: #f4f8ff;
-  padding: 15px;
-  border-radius: 8px;
+  background: #f9fafb;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .campo {
@@ -27,92 +30,108 @@
 
 .campo label {
   font-weight: bold;
-  color: #333;
+  color: #374151;
   margin-bottom: 5px;
 }
 
 .campo input,
 .campo select,
 .campo textarea {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.3);
 }
 
 .subtitulo {
   margin-top: 25px;
-  font-size: 18px;
-  color: #0077cc;
+  font-size: 1.5rem;
+  color: #1d4ed8;
+  font-weight: bold;
 }
 
 .detalle-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 8px 0;
+  gap: 12px;
+  margin: 10px 0;
   background: #eef4ff;
-  padding: 8px;
-  border-radius: 6px;
+  padding: 10px;
+  border-radius: 8px;
 }
 
 .detalle-row select,
 .detalle-row input {
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
 }
 
-.precio, .subtotal {
+.precio,
+.subtotal {
   font-weight: bold;
-  color: #333;
+  color: #374151;
 }
 
 .btn-agregar {
   margin-top: 10px;
-  padding: 10px 15px;
-  background: #28a745;
+  padding: 12px 18px;
+  background: #22c55e;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
 }
 
 .btn-agregar:hover {
-  background: #218838;
+  background: #16a34a;
 }
 
 .btn-eliminar {
   background: transparent;
   border: none;
-  color: red;
+  color: #ef4444;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 1.2rem;
 }
 
 .total {
   text-align: right;
-  font-size: 18px;
+  font-size: 1.5rem;
   margin: 20px 0;
+  font-weight: bold;
 }
 
 .btn-registrar {
   width: 100%;
-  padding: 12px;
-  background: #007bff;
+  padding: 15px;
+  background: #2563eb;
   color: white;
   border: none;
-  border-radius: 10px;
-  font-size: 16px;
+  border-radius: 12px;
+  font-size: 1.2rem;
   cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
 }
 
 .btn-registrar:hover {
-  background: #0056b3;
+  background: #1d4ed8;
 }
 
 .mensaje {
   margin-top: 15px;
   text-align: center;
   font-weight: bold;
+  color: #16a34a;
 }

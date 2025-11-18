@@ -1,0 +1,184 @@
+/* src/styles/pedidos.css */
+
+/* Mejoras en los estilos para un diseño más profesional */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.panel-pedidos .cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.cabecera h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+.cabecera .cabecera-icon {
+  color: #1d4ed8;
+}
+
+/* Grid */
+.grid-pedidos {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 20px;
+}
+@media (min-width: 768px) {
+  .grid-pedidos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1100px) {
+  .grid-pedidos {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.pedido-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.pedido-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.pedido-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.inline-icon {
+  width: 20px;
+  height: 20px;
+  color: #1d4ed8;
+  vertical-align: middle;
+}
+
+/* Meta */
+.pedido-meta p {
+  margin: 5px 0;
+  color: #374151;
+  font-size: 1rem;
+}
+
+/* Observaciones */
+.pedido-observaciones {
+  color: #4b5563;
+  font-size: 1rem;
+}
+
+/* Detalles */
+.pedido-detalles ul {
+  margin: 10px 0 0 20px;
+  padding: 0;
+  color: #374151;
+}
+.pedido-detalles li {
+  margin-bottom: 8px;
+}
+
+/* Footer / Actions */
+.pedido-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+.acciones-left button,
+.acciones-right button {
+  margin-left: 8px;
+}
+
+/* Botones */
+.btn-primary {
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+  color: #ffffff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+.btn-primary:hover {
+  background: linear-gradient(90deg, #1e40af, #6d28d9);
+}
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid #e6eefc;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.btn-ghost:hover {
+  background: #f3f4f6;
+}
+
+/* Estados visuales */
+.badge {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+.estado {
+  text-transform: capitalize;
+}
+
+.estado.pendiente {
+  background: #fef3c7;
+  color: #92400e;
+}
+.estado.en_proceso {
+  background: #dbeafe;
+  color: #1e3a8a;
+}
+.estado.completado {
+  background: #d1fae5;
+  color: #065f46;
+}
+.estado.cancelado {
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+
+/* Misc */
+.cargando,
+.vacio,
+.error {
+  text-align: center;
+  padding: 30px;
+  color: #374151;
+  font-weight: 600;
+}
+.icono-large {
+  width: 40px;
+  height: 40px;
+  color: #2563eb;
+}

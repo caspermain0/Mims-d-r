@@ -1,0 +1,28 @@
+/* Mejoras en los estilos para un diseño más profesional */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  font-family: 'Roboto', Arial, sans-serif; /* Fuente más moderna y profesional */
+  background-color: #f4f4f9; /* Fondo claro y limpio */
+  color: #333; /* Texto con mejor contraste */
+}
+
+.contenido-principal {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #ffffff; /* Fondo blanco para el contenido principal */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil para destacar el contenido */
+  border-radius: 8px; /* Bordes redondeados para un diseño más amigable */
+}
+
+/* Agregado de estilos responsivos */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column; /* Ajuste para pantallas pequeñas */
+  }
+
+  .contenido-principal {
+    padding: 15px; /* Reducción de padding en pantallas pequeñas */
+  }
+}
