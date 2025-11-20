@@ -1,0 +1,25 @@
+# Node & frontend
+node_modules/
+frontend/node_modules/
+dist/
+build/
+
+# Python
+__pycache__/
+*.pyc
+venv/
+env/
+*.egg-info/
+
+# Env / DB / IDE
+.env
+db.sqlite3
+.vscode/
+.idea/
+
+# Build / OS
+.DS_Store
+Thumbs.db
+
+# Opcional: evita subir imágenes grandes si las quieres fuera del repo
+public/imagenes/
