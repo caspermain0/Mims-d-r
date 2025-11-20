@@ -22,3 +22,5 @@ Thumbs.db
 
 # Opcional: evita subir imágenes grandes si las quieres fuera del repo
 public/imagenes/
+__pycache__/
+*.pyc
