@@ -15,6 +15,8 @@ export default function Usuarios() {
     nombre_completo: "",
     telefono: "",
     direccion: "",
+    calle: "", // Campo agregado
+    numero: "", // Campo agregado
     rol: "cliente",
   });
   const base = "/usuarios/usuarios/"; // viewset register path
@@ -45,6 +47,8 @@ export default function Usuarios() {
       nombre_completo: "",
       telefono: "",
       direccion: "",
+      calle: "", // Campo agregado
+      numero: "", // Campo agregado
       rol: "cliente",
     });
     setOpenModal(true);
@@ -59,6 +63,8 @@ export default function Usuarios() {
       nombre_completo: u.nombre_completo || "",
       telefono: u.telefono || "",
       direccion: u.direccion || "",
+      calle: u.calle || "", // Campo agregado
+      numero: u.numero || "", // Campo agregado
       rol: u.rol || "cliente",
     });
     setOpenModal(true);
@@ -212,6 +218,18 @@ export default function Usuarios() {
             value={form.direccion}
             onChange={(e) => setForm({ ...form, direccion: e.target.value })}
             placeholder="Dirección"
+            className="w-full px-3 py-2 border rounded"
+          />
+          <input
+            value={form.calle}
+            onChange={(e) => setForm({ ...form, calle: e.target.value })}
+            placeholder="Calle"
+            className="w-full px-3 py-2 border rounded"
+          />
+          <input
+            value={form.numero}
+            onChange={(e) => setForm({ ...form, numero: e.target.value })}
+            placeholder="Número"
             className="w-full px-3 py-2 border rounded"
           />
           <select

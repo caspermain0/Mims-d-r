@@ -7,7 +7,7 @@ from .models import Medicamento, Categoria, MovimientoInventario
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categoria
-        fields = ['id', 'nombre', 'descripcion', 'activo']
+        fields = ['id', 'nombre', 'descripcion']
 
 
 # ==========================
@@ -38,7 +38,7 @@ class MedicamentoSerializer(serializers.ModelSerializer):
             'categoria_id',
             'fecha_vencimiento',
             'estado',
-            'imagen_url',
+            'imagen',  # 🟡 Nuevo campo para imágenes
         ]
 
     def to_representation(self, instance):

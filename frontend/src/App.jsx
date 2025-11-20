@@ -15,6 +15,7 @@ import Acerca from "./pages/Acerca.jsx";
 import Reseñas from "./pages/reseñas.jsx";
 import Mensajes from "./pages/Mensajes.jsx";
 import Contacto from "./pages/Contacto.jsx"; // 👈 añadimos la nueva página
+import ListaUsuarios from "./pages/ListaUsuarios.jsx";
 
 // 👇 componente para proteger rutas según rol
 const PrivateRoute = ({ children, allowedRoles }) => {
@@ -70,6 +71,16 @@ export default function App() {
           element={
             <PrivateRoute allowedRoles={["empleado"]}>
               <EmpleadoDashboard />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Página para listar usuarios (admin) */}
+        <Route
+          path="/usuarios"
+          element={
+            <PrivateRoute allowedRoles={["admin"]}>
+              <ListaUsuarios />
             </PrivateRoute>
           }
         />

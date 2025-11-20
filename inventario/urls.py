@@ -3,7 +3,6 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     CategoriaViewSet,
     MedicamentoViewSet,
-    MovimientoInventarioViewSet,
     MedicamentoListView,
     MedicamentoCreateView,
     MedicamentoDetailView,
@@ -14,9 +13,8 @@ from .views import (
 # 🚀 Router para CRUD automáticos (ViewSets)
 # =========================
 router = DefaultRouter()
-router.register(r'categorias', CategoriaViewSet, basename='categoria')
-router.register(r'medicamentos-crud', MedicamentoViewSet, basename='medicamento-crud')
-router.register(r'movimientos', MovimientoInventarioViewSet, basename='movimiento-inventario')
+router.register('medicamentos-crud', MedicamentoViewSet, basename='medicamentos')
+router.register('categorias', CategoriaViewSet, basename='categorias')
 
 # =========================
 # 🌐 URL patterns

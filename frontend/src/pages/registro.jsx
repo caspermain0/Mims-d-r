@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { registerUsuario, loginUsuario } from "../services/api.js";
+import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Pill, UserPlus, LogIn } from "lucide-react";
-import { useNavigate, Link } from "react-router-dom";
 import "../styles/registro.css"; // 👈 Importa los estilos
 
 export default function Registro() {
@@ -12,7 +11,8 @@ export default function Registro() {
     password: "",
     nombre_completo: "",
     telefono: "",
-    direccion: "",
+    calle: "", // 🟡 Nuevo campo
+    numero: "", // 🟡 Nuevo campo
   });
   const [mensaje, setMensaje] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,43 +25,35 @@ export default function Registro() {
     e.preventDefault();
     setLoading(true);
     try {
-      // 1️⃣ Registrar usuario
-      const res = await registerUsuario(formData);
-      setMensaje(res.data.message || "✅ Usuario registrado correctamente");
-
-      // 2️⃣ Login automático
-      const loginData = {
-        username: formData.username,
-        password: formData.password,
-      };
-      const data = await loginUsuario(loginData);
-
-      // 3️⃣ Redirigir según rol
-      if (data.usuario.rol === "administrador") navigate("/panelAdmin");
-      else if (data.usuario.rol === "empleado") navigate("/panelEmpleado");
-      else navigate("/perfilCliente");
-
-      // 4️⃣ Limpiar formulario
-      setFormData({
-        username: "",
-        email: "",
-        password: "",
-        nombre_completo: "",
-        telefono: "",
-        direccion: "",
+      // Usar la ruta pública de registro (vista RegistroUsuarioView)
+      const response = await fetch("http://localhost:8000/api/usuarios/registro/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
-    } catch (err) {
-      if (err.response && err.response.data) {
-        const errors = err.response.data;
-        let errorMsg = "";
-        for (let key in errors) {
-          errorMsg += `${key}: ${errors[key].join(", ")}\n`;
-        }
-        setMensaje(errorMsg);
+      if (response.ok) {
+        setMensaje("Usuario registrado con éxito");
+        navigate("/login");
       } else {
-        setMensaje("❌ Error al registrar usuario o iniciar sesión");
+        const errorData = await response.json();
+        // Mostrar errores de validación del serializer si existen
+        if (errorData.detail) {
+          setMensaje(errorData.detail);
+        } else if (typeof errorData === 'object') {
+          // Convertir errores por campo en un solo texto legible
+          const messages = Object.entries(errorData).map(([k, v]) => {
+            if (Array.isArray(v)) return `${k}: ${v.join(', ')}`;
+            return `${k}: ${String(v)}`;
+          });
+          setMensaje(messages.join('\n'));
+        } else {
+          setMensaje("Error al registrar usuario");
+        }
       }
-      console.error(err);
+    } catch (error) {
+      setMensaje("Error de conexión con el servidor");
     } finally {
       setLoading(false);
     }
@@ -115,7 +107,8 @@ export default function Registro() {
             { name: "password", placeholder: "Contraseña", type: "password" },
             { name: "nombre_completo", placeholder: "Nombre completo" },
             { name: "telefono", placeholder: "Teléfono" },
-            { name: "direccion", placeholder: "Dirección" },
+            { name: "calle", placeholder: "Calle" }, // 🟡 Nuevo campo
+            { name: "numero", placeholder: "Número" }, // 🟡 Nuevo campo
           ].map((field) => (
             <div key={field.name}>
               <input
@@ -136,7 +129,7 @@ export default function Registro() {
             className="registro-btn"
           >
             <UserPlus size={20} />
-            {loading ? "Procesando..." : "Registrarse"}
+            {loading ? "Registrando..." : "Registrar"}
           </button>
         </form>
 
@@ -159,7 +152,7 @@ export default function Registro() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className={`mt-5 text-center font-medium whitespace-pre-line ${
-              mensaje.includes("✅") ? "text-green-600" : "text-red-600"
+              mensaje.includes("éxito") ? "text-green-600" : "text-red-600"
             }`}
           >
             {mensaje}

@@ -39,9 +39,14 @@ export default function Navbar() {
 
         {/* Solo visible si el usuario es admin */}
         {usuario.rol === "admin" && (
-          <Link to="/mensajes" className="hover:text-pink-200 transition">
-            Mensajes
-          </Link>
+          <>
+            <Link to="/mensajes" className="hover:text-pink-200 transition">
+              Mensajes
+            </Link>
+            <Link to="/usuarios" className="hover:text-pink-200 transition">
+              Usuarios
+            </Link>
+          </>
         )}
       </div>
 

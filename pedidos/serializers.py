@@ -1,11 +1,13 @@
 from rest_framework import serializers
 from .models import Pedido, DetallePedido
-from inventario.serializer import MedicamentoSerializer
+from inventario.models import Medicamento
+from facturacion.models import Factura
+from decimal import Decimal
 
 class DetallePedidoSerializer(serializers.ModelSerializer):
-    medicamento = MedicamentoSerializer(read_only=True)
+    medicamento = serializers.StringRelatedField(read_only=True)
     medicamento_id = serializers.PrimaryKeyRelatedField(
-        queryset=MedicamentoSerializer.Meta.model.objects.all(),
+        queryset=Medicamento.objects.all(),
         source="medicamento",
         write_only=True
     )
@@ -20,12 +22,12 @@ class PedidoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Pedido
-        fields = ["id", "cliente", "fecha_creacion", "estado", "total", "detalles", "detalles_data"]
+        fields = ["id", "cliente", "fecha_creacion", "estado", "total", "detalles", "detalles_data", "factura"]
 
     def create(self, validated_data):
         detalles_data = validated_data.pop("detalles_data", [])
         pedido = Pedido.objects.create(**validated_data)
-        total = 0
+        total = Decimal("0.00")
 
         for detalle_data in detalles_data:
             medicamento = detalle_data["medicamento"]
@@ -38,6 +40,17 @@ class PedidoSerializer(serializers.ModelSerializer):
 
         pedido.total = total
         pedido.save()
+
+        factura = Factura.objects.create(
+            cliente=pedido.cliente,
+            empleado=None,
+            total=pedido.total,
+            metodo_pago="pendiente",
+            observaciones="Generada automáticamente desde el pedido."
+        )
+        pedido.factura = factura
+        pedido.save()
+
         return pedido
 
     def update(self, instance, validated_data):
@@ -47,7 +60,8 @@ class PedidoSerializer(serializers.ModelSerializer):
 
         if detalles_data:
             instance.detalles.all().delete()
-            total = 0
+            total = Decimal("0.00")
+
             for detalle_data in detalles_data:
                 medicamento = detalle_data["medicamento"]
                 cantidad = detalle_data["cantidad"]
@@ -56,6 +70,7 @@ class PedidoSerializer(serializers.ModelSerializer):
                     pedido=instance, medicamento=medicamento, cantidad=cantidad, subtotal=subtotal
                 )
                 total += subtotal
+
             instance.total = total
             instance.save()
 

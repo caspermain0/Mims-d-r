@@ -11,6 +11,7 @@ Usuario = get_user_model()
 class UsuarioSerializer(serializers.ModelSerializer):
     # ✅ Si el usuario tiene una FK a Rol, muestra los datos del rol
     rol_detalle = serializers.StringRelatedField(source="rol", read_only=True)
+    direccion_completa = serializers.CharField(read_only=True)  # ✅ Sin source
 
     class Meta:
         model = Usuario
@@ -21,9 +22,11 @@ class UsuarioSerializer(serializers.ModelSerializer):
             "password",
             "nombre_completo",
             "telefono",
-            "direccion",
-            "rol",           # puede ser FK o campo tipo CharField, según tu modelo
-            "rol_detalle",   # se mostrará solo para lectura
+            "calle",           # ✅ Este campo ahora sí existe
+            "numero",          # ✅ Este campo ahora sí existe
+            "direccion_completa",  # ✅ Este campo también existe
+            "rol",             # puede ser FK o campo tipo CharField, según tu modelo
+            "rol_detalle",     # se mostrará solo para lectura
             "num_doc",
         ]
         extra_kwargs = {

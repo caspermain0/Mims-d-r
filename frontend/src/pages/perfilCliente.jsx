@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { User, Edit, ShoppingBag } from "lucide-react";
+import { User, Edit, ShoppingBag, Save } from "lucide-react";
 
 export default function PerfilCliente() {
   const [usuario, setUsuario] = useState(null);
   const [facturas, setFacturas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editando, setEditando] = useState(false);
+  const [datosEdit, setDatosEdit] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
+        if (!token) {
+          navigate("/login");
+          return;
+        }
+
         const config = { headers: { Authorization: `Bearer ${token}` } };
 
         const perfilRes = await axios.get("http://localhost:8000/api/usuarios/perfil/", config);
@@ -22,7 +29,10 @@ export default function PerfilCliente() {
         setFacturas(facturasRes.data);
       } catch (error) {
         console.error("Error al cargar perfil:", error);
-        navigate("/login");
+        if (error.response?.status === 401) {
+          localStorage.removeItem("token");
+          navigate("/login");
+        }
       } finally {
         setLoading(false);
       }
@@ -30,6 +40,33 @@ export default function PerfilCliente() {
 
     fetchData();
   }, [navigate]);
+
+  // Manejar cambios en el formulario de edición
+  const handleChange = (e) => {
+    setDatosEdit({
+      ...datosEdit,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // Guardar cambios
+  const guardarCambios = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+
+      // ✅ URL CORREGIDA
+      const res = await axios.put("http://localhost:8000/api/usuarios/perfil/editar/", datosEdit, config);
+
+      // Actualizar estado local
+      setUsuario(res.data);
+      setEditando(false);
+      alert("Perfil actualizado correctamente.");
+    } catch (error) {
+      console.error("Error al actualizar perfil:", error);
+      alert("Error al actualizar perfil.");
+    }
+  };
 
   if (loading) {
     return (
@@ -55,34 +92,95 @@ export default function PerfilCliente() {
               <p className="text-gray-500">{usuario?.email}</p>
             </div>
           </div>
-          <button className="bg-blue-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-600 flex items-center gap-2 transition">
-            <Edit size={18} />
-            Editar
+          <button
+            className="bg-blue-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-600 flex items-center gap-2 transition"
+            onClick={() => {
+              if (editando) {
+                guardarCambios();
+              } else {
+                setEditando(true);
+                setDatosEdit({
+                  nombre_completo: usuario?.nombre_completo || "",
+                  telefono: usuario?.telefono || "",
+                  direccion: usuario?.direccion_completa || "",
+                  email: usuario?.email || "",
+                });
+              }
+            }}
+          >
+            {editando ? <Save size={18} /> : <Edit size={18} />}
+            {editando ? "Guardar" : "Editar"}
           </button>
         </div>
 
         {/* 🔹 Información del usuario */}
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
-          <div>
-            <label className="block text-sm text-gray-500">Usuario</label>
-            <p className="text-gray-800 font-medium">{usuario?.username}</p>
-          </div>
-          <div>
-            <label className="block text-sm text-gray-500">Rol</label>
-            <p className="text-gray-800 font-medium">{usuario?.rol}</p>
-          </div>
-          <div>
-            <label className="block text-sm text-gray-500">Teléfono</label>
-            <p className="text-gray-800 font-medium">{usuario?.telefono || "—"}</p>
-          </div>
-          <div>
-            <label className="block text-sm text-gray-500">Dirección</label>
-            <p className="text-gray-800 font-medium">{usuario?.direccion || "—"}</p>
-          </div>
+          {editando ? (
+            <>
+              <div>
+                <label className="block text-sm text-gray-500">Nombre completo</label>
+                <input
+                  type="text"
+                  name="nombre_completo"
+                  value={datosEdit.nombre_completo || ""}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-500">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={datosEdit.email || ""}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-500">Teléfono</label>
+                <input
+                  type="text"
+                  name="telefono"
+                  value={datosEdit.telefono || ""}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-500">Dirección</label>
+                <input
+                  type="text"
+                  name="direccion"
+                  value={datosEdit.direccion || ""}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded-lg"
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <label className="block text-sm text-gray-500">Usuario</label>
+                <p className="text-gray-800 font-medium">{usuario?.username}</p>
+              </div>
+              <div>
+                <label className="block text-sm text-gray-500">Rol</label>
+                <p className="text-gray-800 font-medium">{usuario?.rol}</p>
+              </div>
+              <div>
+                <label className="block text-sm text-gray-500">Teléfono</label>
+                <p className="text-gray-800 font-medium">{usuario?.telefono || "—"}</p>
+              </div>
+              <div>
+                <label className="block text-sm text-gray-500">Dirección</label>
+                <p className="text-gray-800 font-medium">{usuario?.direccion_completa || "—"}</p>
+              </div>
+            </>
+          )}
         </div>
 
         {/* 🧾 HISTORIAL DE COMPRAS (facturas) */}
-        {/* 🔸 ESTE ES EL BLOQUE DEL HISTORIAL DE FACTURAS 🔸 */}
         <div>
           <h3 className="text-xl font-semibold text-green-700 mb-4 flex items-center gap-2">
             <ShoppingBag size={22} /> Historial de Compras

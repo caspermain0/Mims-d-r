@@ -8,12 +8,14 @@ class Usuario(AbstractUser):
         ('empleado', 'Empleado'),
         ('cliente', 'Cliente'),
     ]
-
+    id = models.AutoField(primary_key=True)
     num_doc = models.CharField(max_length=20, unique=True, null=True, blank=True)
     cod_recuperacion = models.CharField(max_length=100, blank=True, null=True)  # 🔑 para recuperar contraseña
     nombre_completo = models.CharField(max_length=100, blank=True, null=True)
     telefono = models.CharField(max_length=15, blank=True, null=True)
-    direccion = models.CharField(max_length=200, blank=True, null=True)
+    direccion_completa = models.CharField(max_length=200, blank=True, null=True)
+    calle = models.CharField(max_length=100, blank=True, null=True)  # ✅ Nuevo campo
+    numero = models.CharField(max_length=10, blank=True, null=True)  # ✅ Nuevo campo
     rol = models.CharField(max_length=20, choices=ROL_CHOICES, default='cliente')
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     actualizado = models.DateTimeField(auto_now=True)
@@ -28,6 +30,7 @@ class Usuario(AbstractUser):
     def generar_codigo_recuperacion(self):
         self.cod_recuperacion = str(uuid.uuid4())[:8]
         self.save()
+
 #class rol model
 class Rol(models.Model):
     nombre = models.CharField(max_length=50, unique=True)

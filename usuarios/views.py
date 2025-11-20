@@ -1,4 +1,3 @@
-# usuarios/views.py
 import uuid
 from django.core.mail import send_mail
 from django.conf import settings
@@ -39,17 +38,25 @@ class LoginUsuarioView(APIView):
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
+
+        # Validación de campos requeridos
+        if not username or not password:
+            return Response(
+                {"error": "Debes proporcionar un nombre de usuario y contraseña."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         usuario = authenticate(username=username, password=password)
 
         if usuario:
             refresh = RefreshToken.for_user(usuario)
             return Response({
                 "usuario": {
-                    "id": usuario.id,
+                    "id": usuario.id, # type: ignore
                     "username": usuario.username,
-                    "nombre_completo": usuario.nombre_completo,
+                    "nombre_completo": getattr(usuario, 'nombre_completo', ""),
                     "email": usuario.email,
-                    "rol": usuario.rol,
+                    "rol": usuario.rol, # type: ignore
                 },
                 "token": str(refresh.access_token),
                 "refresh": str(refresh)
@@ -72,9 +79,36 @@ def perfil_usuario(request):
         "username": usuario.username,
         "email": usuario.email,
         "rol": usuario.rol,
-        "nombre_completo": usuario.nombre_completo,
-        "telefono": usuario.telefono,
-        "direccion": usuario.direccion,
+        "nombre_completo": getattr(usuario, 'nombre_completo', ""),
+        "telefono": getattr(usuario, 'telefono', ""),
+        "direccion_completa": getattr(usuario, 'direccion_completa', ""),
+    })
+
+
+# =========================
+# Actualizar perfil del usuario logueado
+# =========================
+@api_view(['PUT'])
+@permission_classes([permissions.IsAuthenticated])
+def actualizar_perfil(request):
+    usuario = request.user
+
+    # Permitir actualizar solo ciertos campos
+    usuario.nombre_completo = request.data.get('nombre_completo', usuario.nombre_completo)
+    usuario.telefono = request.data.get('telefono', usuario.telefono)
+    usuario.direccion_completa = request.data.get('direccion', usuario.direccion_completa)
+    usuario.email = request.data.get('email', usuario.email)
+
+    usuario.save()
+
+    return Response({
+        "id": usuario.id,
+        "username": usuario.username,
+        "email": usuario.email,
+        "rol": usuario.rol,
+        "nombre_completo": getattr(usuario, 'nombre_completo', ""),
+        "telefono": getattr(usuario, 'telefono', ""),
+        "direccion_completa": getattr(usuario, 'direccion_completa', ""),
     })
 
 

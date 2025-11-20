@@ -1,8 +1,8 @@
-from rest_framework import status, generics, permissions, viewsets
+from rest_framework import status, permissions, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Pedido, DetallePedido
-from .serializers import PedidoSerializer
+from .serializers import PedidoSerializer, DetallePedidoSerializer
 
 # =========================
 # 🔹 CRUD AUTOMÁTICO (ViewSet)
@@ -35,12 +35,12 @@ class CrearPedidoView(APIView):
     {
         "cliente": 1,
         "detalles_data": [
-            {"medicamento": 2, "cantidad": 3},
-            {"medicamento": 5, "cantidad": 1}
+            {"medicamento_id": 2, "cantidad": 3},
+            {"medicamento_id": 5, "cantidad": 1}
         ]
     }
     """
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
         serializer = PedidoSerializer(data=request.data)
@@ -52,7 +52,7 @@ class CrearPedidoView(APIView):
             for d in detalles_data:
                 DetallePedido.objects.create(
                     pedido=pedido,
-                    medicamento_id=d.get("medicamento"),
+                    medicamento_id=d.get("medicamento_id"),
                     cantidad=d.get("cantidad", 1)
                 )
 
@@ -96,14 +96,44 @@ class ActualizarPedidoView(APIView):
             # Si hay detalles, se reemplazan
             detalles_data = request.data.get("detalles_data", None)
             if detalles_data is not None:
-                pedido.detalles.all().delete() # type: ignore
+                # Acceder a los detalles relacionados usando el `related_name="detalles"`
+                DetallePedido.objects.filter(pedido=pedido).delete()  # Elimina los detalles existentes
                 for d in detalles_data:
                     DetallePedido.objects.create(
                         pedido=pedido,
-                        medicamento_id=d.get("medicamento"),
+                        medicamento_id=d.get("medicamento_id"),
                         cantidad=d.get("cantidad", 1)
                     )
+
+                    detalle = DetallePedido.objects.get(pedido=pedido, medicamento_id=d.get("medicamento_id"))
+                    detalle.subtotal = detalle.medicamento.precio_venta * detalle.cantidad
+                    detalle.save()
+
+                for d in detalles_data:
+                    detalle = DetallePedido.objects.get(pedido=pedido, medicamento_id=d.get("medicamento_id"))
+                    detalle.subtotal = detalle.medicamento.precio_venta * detalle.cantidad
+                    detalle.save()
 
             return Response(PedidoSerializer(pedido).data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# =========================
+# 🔹 ELIMINAR PEDIDO
+# =========================
+class EliminarPedidoView(APIView):
+    """
+    Cambia el estado del pedido a 'cancelado' en lugar de eliminarlo físicamente.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def delete(self, request, pk):
+        try:
+            pedido = Pedido.objects.get(pk=pk)
+        except Pedido.DoesNotExist:
+            return Response({"error": "Pedido no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+        pedido.estado = "cancelado"
+        pedido.save()
+        return Response({"mensaje": "Pedido cancelado correctamente"}, status=status.HTTP_200_OK)
+

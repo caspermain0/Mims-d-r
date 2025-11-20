@@ -39,9 +39,8 @@ export default function Mensajes() {
     try {
       const nuevaResena = {
         nombre: msg.nombre,
-        correo: msg.correo,
-        mensaje: msg.mensaje, // 👈 Usa el mismo campo que el modelo Django espera
-        calificacion: 5, // Puedes hacerlo dinámico si lo deseas
+        comentario: msg.mensaje, // ✅ Campo correcto
+        calificacion: 5,         // Puedes hacerlo dinámico si lo deseas
       };
 
       console.log("📤 Enviando reseña:", nuevaResena);
