@@ -13,7 +13,6 @@ env/
 
 # Env / DB / IDE
 .env
-db.sqlite3
 .vscode/
 .idea/
 
