@@ -7,7 +7,12 @@ from .models import Medicamento, Categoria, MovimientoInventario
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categoria
+<<<<<<< HEAD
         fields = ['id', 'nombre', 'descripcion', 'activo']
+=======
+        fields = ['id', 'nombre', 'descripcion']
+
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 
 # ==========================
 # 💊 SERIALIZER DE MEDICAMENTO
@@ -37,6 +42,7 @@ class MedicamentoSerializer(serializers.ModelSerializer):
             'categoria_id',
             'fecha_vencimiento',
             'estado',
+<<<<<<< HEAD
             'imagen_url',
         ]
 
@@ -60,6 +66,22 @@ class MedicamentoSerializer(serializers.ModelSerializer):
 
         return data
 
+=======
+            'imagen',  # 🟡 Nuevo campo para imágenes
+        ]
+
+    def to_representation(self, instance):
+        """Personaliza la respuesta para mostrar categoría simplificada."""
+        data = super().to_representation(instance)
+        if instance.categoria:
+            data['categoria'] = {
+                'id': instance.categoria.id,
+                'nombre': instance.categoria.nombre,
+            }
+        return data
+
+
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 # ===================================
 # 📦 SERIALIZER DE MOVIMIENTO INVENTARIO
 # ===================================
@@ -82,6 +104,7 @@ class MovimientoInventarioSerializer(serializers.ModelSerializer):
             'medicamento',
             'medicamento_id',
         ]
+<<<<<<< HEAD
 
         # Serializer básico de categoría
 class CategoriaSerializer(serializers.ModelSerializer):
@@ -117,3 +140,5 @@ class CategoriaConMedicamentosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categoria
         fields = ['id', 'nombre', 'descripcion', 'activo', 'medicamentos']
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a

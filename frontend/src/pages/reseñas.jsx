@@ -8,7 +8,11 @@ export default function Reseñas() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+<<<<<<< HEAD
   // 🔹 Ajusta esta URL según tu backend
+=======
+  // 🔹 URL CORRECTA para obtener reseñas (debe coincidir con tu backend)
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
   const apiUrl = "http://127.0.0.1:8000/api/mensajes/resenas/";
 
   useEffect(() => {
@@ -18,7 +22,14 @@ export default function Reseñas() {
         setReseñas(response.data);
       } catch (error) {
         console.error("❌ Error al cargar reseñas:", error);
+<<<<<<< HEAD
         setError("No se pudieron cargar las reseñas. Intenta nuevamente.");
+=======
+        if (error.response) {
+          console.error("Detalles del error:", error.response.data);
+        }
+        setError("No se pudieron cargar las reseñas. Verifica la API o intenta más tarde.");
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
       } finally {
         setLoading(false);
       }
@@ -112,4 +123,8 @@ export default function Reseñas() {
       </div>
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a

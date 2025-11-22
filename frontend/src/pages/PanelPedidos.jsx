@@ -9,8 +9,16 @@ import {
   ClipboardList,
   Clock,
 } from "lucide-react";
+<<<<<<< HEAD
 import { obtenerPedidos, cambiarEstadoPedido } from "../services/pedidosServices.js";
 import "../styles/empleadoDashboard.css"; // estilos actualizados
+=======
+import {
+  obtenerPedidos,
+  cambiarEstadoPedido,
+} from "../services/pedidosServices.js";
+import "../styles/pedidos.css";
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 
 export default function PanelPedidos() {
   const [pedidos, setPedidos] = useState([]);
@@ -27,7 +35,11 @@ export default function PanelPedidos() {
     setError(null);
     try {
       const data = await obtenerPedidos();
+<<<<<<< HEAD
       setPedidos(data || []);
+=======
+      setPedidos(data);
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
     } catch (e) {
       console.error("Error cargando pedidos:", e);
       setError("Error al cargar pedidos. Intenta de nuevo.");
@@ -39,6 +51,7 @@ export default function PanelPedidos() {
   const handleCambiarEstado = async (pedidoId, nuevoEstado) => {
     if (!window.confirm(`¿Cambiar estado a "${nuevoEstado}"?`)) return;
     setUpdatingId(pedidoId);
+<<<<<<< HEAD
 
     try {
       await cambiarEstadoPedido(pedidoId, nuevoEstado);
@@ -46,6 +59,13 @@ export default function PanelPedidos() {
         prev.map((p) =>
           p.id === pedidoId ? { ...p, estado: nuevoEstado } : p
         )
+=======
+    try {
+      await cambiarEstadoPedido(pedidoId, { estado: nuevoEstado });
+      // actualizar localmente para respuesta instantánea
+      setPedidos((prev) =>
+        prev.map((p) => (p.id === pedidoId ? { ...p, estado: nuevoEstado } : p))
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
       );
     } catch (e) {
       console.error("Error cambiando estado:", e);
@@ -55,6 +75,7 @@ export default function PanelPedidos() {
     }
   };
 
+<<<<<<< HEAD
   const getEstadoClass = (estado) => {
     switch (estado) {
       case "pendiente":
@@ -70,6 +91,8 @@ export default function PanelPedidos() {
     }
   };
 
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
   if (loading) {
     return (
       <div className="panel-pedidos cargando">
@@ -97,6 +120,7 @@ export default function PanelPedidos() {
         </button>
       </div>
 
+<<<<<<< HEAD
       {/* 🔥 ESTA ES LA CORRECCIÓN PARA ACOMODAR LAS CARDS */}
       <div className="grid-pedidos">
         {pedidos.map((pedido) => (
@@ -107,18 +131,35 @@ export default function PanelPedidos() {
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
+=======
+      <div className="grid-pedidos">
+        {pedidos.map((pedido) => (
+          <motion.article
+            className="pedido-card"
+            key={pedido.id}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.22 }}
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
           >
             <header className="pedido-header">
               <h3>
                 <Package className="inline-icon" /> Pedido #{pedido.id}
               </h3>
+<<<<<<< HEAD
               <span className={`badge ${getEstadoClass(pedido.estado)}`}>
                 {pedido.estado.replace("_", " ")}
+=======
+              <span className={`badge estado ${pedido.estado}`}>
+                {pedido.estado}
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
               </span>
             </header>
 
             <div className="pedido-meta">
               <p>
+<<<<<<< HEAD
                 <User className="inline-icon" /> <strong>Cliente:</strong>{" "}
                 {pedido.cliente || "Desconocido"}
               </p>
@@ -133,18 +174,46 @@ export default function PanelPedidos() {
               {pedido.fecha_entrega && (
                 <p>
                   <Calendar className="inline-icon" /> <strong>Entrega:</strong>{" "}
+=======
+                <User className="inline-icon" />{" "}
+                <strong>Cliente:</strong> {pedido.cliente || "Desconocido"}
+              </p>
+
+              <p>
+                <MapPin className="inline-icon" />{" "}
+                <strong>Dirección:</strong>{" "}
+                {pedido.direccion_entrega || "Sin dirección"}
+              </p>
+
+              <p>
+                <Calendar className="inline-icon" />{" "}
+                <strong>Creado:</strong>{" "}
+                {new Date(pedido.fecha_creacion).toLocaleString()}
+              </p>
+
+              {pedido.fecha_entrega && (
+                <p>
+                  <Calendar className="inline-icon" />{" "}
+                  <strong>Entrega:</strong>{" "}
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
                   {new Date(pedido.fecha_entrega).toLocaleString()}
                 </p>
               )}
             </div>
 
             <div className="pedido-observaciones">
+<<<<<<< HEAD
               <strong>Observaciones:</strong> {pedido.observaciones || "Ninguna"}
+=======
+              <strong>Observaciones:</strong>{" "}
+              {pedido.observaciones || "Ninguna"}
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
             </div>
 
             <div className="pedido-detalles">
               <strong>Detalles:</strong>
               <ul>
+<<<<<<< HEAD
                 {Array.isArray(pedido.detalles) &&
                   pedido.detalles.map((d) => (
                     <li key={d.id}>
@@ -165,10 +234,22 @@ export default function PanelPedidos() {
                 : "$0.00"}
             </div>
 
+=======
+                {pedido.detalles.map((d) => (
+                  <li key={d.id}>
+                    {d.medicamento?.nombre || "Producto desconocido"} —{" "}
+                    <span className="cantidad">x{d.cantidad}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
             <footer className="pedido-actions">
               <div className="acciones-left">
                 <button
                   className="btn-ghost"
+<<<<<<< HEAD
                   onClick={async () => {
                     try {
                       await navigator.clipboard.writeText(
@@ -179,11 +260,16 @@ export default function PanelPedidos() {
                       alert("No se pudo copiar el pedido.");
                     }
                   }}
+=======
+                  onClick={() => navigator.clipboard?.writeText(JSON.stringify(pedido))}
+                  title="Copiar JSON"
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
                 >
                   Copiar
                 </button>
                 <button
                   className="btn-ghost"
+<<<<<<< HEAD
                   onClick={() =>
                     window.alert(
                       `Detalles del pedido #${pedido.id}\n\n${JSON.stringify(
@@ -193,12 +279,16 @@ export default function PanelPedidos() {
                       )}`
                     )
                   }
+=======
+                  onClick={() => window.alert(`Detalles del pedido #${pedido.id}`)}
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
                 >
                   Ver
                 </button>
               </div>
 
               <div className="acciones-right">
+<<<<<<< HEAD
                 {pedido.estado !== "entregado" &&
                   pedido.estado !== "cancelado" && (
                     <button
@@ -216,6 +306,20 @@ export default function PanelPedidos() {
                       {updatingId === pedido.id ? "..." : "Siguiente estado"}
                     </button>
                   )}
+=======
+                {/* botones de transición de estado - se muestran condicionalmente */}
+                {pedido.estado !== "completado" && (
+                  <button
+                    className="btn-primary"
+                    disabled={updatingId === pedido.id}
+                    onClick={() =>
+                      handleCambiarEstado(pedido.id, pedido.estado === "pendiente" ? "en_proceso" : "completado")
+                    }
+                  >
+                    {updatingId === pedido.id ? "..." : "Siguiente estado"}
+                  </button>
+                )}
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
               </div>
             </footer>
           </motion.article>

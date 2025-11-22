@@ -1,6 +1,9 @@
 from django.contrib import admin
 from .models import Pedido, DetallePedido
+<<<<<<< HEAD
 from inventario.models import Medicamento  # ⚠ Importante para acceder al precio
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 
 # =========================
 # 💊 Inline para Detalles de Pedido
@@ -9,6 +12,7 @@ class DetallePedidoInline(admin.TabularInline):
     model = DetallePedido
     extra = 1  # Muestra 1 línea vacía adicional para agregar fácilmente
     can_delete = True  # Permitir eliminar detalles desde el admin
+<<<<<<< HEAD
     readonly_fields = ('precio_unitario', 'subtotal')  # mostrar solo lectura
     fields = ('medicamento', 'cantidad', 'precio_unitario', 'subtotal')
 
@@ -19,6 +23,8 @@ class DetallePedidoInline(admin.TabularInline):
     def subtotal(self, obj):
         return obj.cantidad * obj.medicamento.precio_venta if obj.medicamento else 0
     subtotal.short_description = 'Subtotal'
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 
 
 # =========================
@@ -33,6 +39,7 @@ class PedidoAdmin(admin.ModelAdmin):
     ordering = ('-fecha_creacion',)
 
     def ver_detalles(self, obj):
+<<<<<<< HEAD
         """Muestra los medicamentos, cantidades y precio unitario de cada pedido."""
         detalles = []
         for d in obj.detalles.all():
@@ -41,6 +48,10 @@ class PedidoAdmin(admin.ModelAdmin):
             else:
                 detalles.append(f"Medicamento eliminado x{d.cantidad}")
         return ", ".join(detalles)
+=======
+        """Muestra los medicamentos y cantidades de cada pedido."""
+        return ", ".join([f"{d.medicamento.nombre} x{d.cantidad}" for d in obj.detalles.all()])
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
     ver_detalles.short_description = "Detalles del Pedido"
 
 
@@ -49,6 +60,7 @@ class PedidoAdmin(admin.ModelAdmin):
 # =========================
 @admin.register(DetallePedido)
 class DetallePedidoAdmin(admin.ModelAdmin):
+<<<<<<< HEAD
     list_display = ('id', 'pedido', 'medicamento', 'cantidad', 'precio_unitario', 'subtotal')
     search_fields = ('pedido__cliente__username', 'medicamento__nombre')
     list_filter = ('pedido__estado',)
@@ -60,3 +72,8 @@ class DetallePedidoAdmin(admin.ModelAdmin):
     def subtotal(self, obj):
         return obj.cantidad * obj.medicamento.precio_venta if obj.medicamento else 0
     subtotal.short_description = 'Subtotal'
+=======
+    list_display = ('id', 'pedido', 'medicamento', 'cantidad', 'subtotal')
+    search_fields = ('pedido__cliente__username', 'medicamento__nombre')
+    list_filter = ('pedido__estado',)
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a

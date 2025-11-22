@@ -8,7 +8,10 @@ export default function Usuarios() {
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [editing, setEditing] = useState(null);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -16,10 +19,18 @@ export default function Usuarios() {
     nombre_completo: "",
     telefono: "",
     direccion: "",
+<<<<<<< HEAD
     rol: "cliente",
   });
 
   const base = "/usuarios/usuarios/";
+=======
+    calle: "", // Campo agregado
+    numero: "", // Campo agregado
+    rol: "cliente",
+  });
+  const base = "/usuarios/usuarios/"; // viewset register path
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 
   useEffect(() => {
     fetchUsers();
@@ -29,9 +40,15 @@ export default function Usuarios() {
     setLoading(true);
     try {
       const res = await api.get(base);
+<<<<<<< HEAD
       setUsuarios(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Error al obtener usuarios:", err);
+=======
+      setUsuarios(res.data);
+    } catch (err) {
+      console.error(err);
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
       alert("Error al cargar usuarios");
     } finally {
       setLoading(false);
@@ -47,6 +64,11 @@ export default function Usuarios() {
       nombre_completo: "",
       telefono: "",
       direccion: "",
+<<<<<<< HEAD
+=======
+      calle: "", // Campo agregado
+      numero: "", // Campo agregado
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
       rol: "cliente",
     });
     setOpenModal(true);
@@ -61,6 +83,11 @@ export default function Usuarios() {
       nombre_completo: u.nombre_completo || "",
       telefono: u.telefono || "",
       direccion: u.direccion || "",
+<<<<<<< HEAD
+=======
+      calle: u.calle || "", // Campo agregado
+      numero: u.numero || "", // Campo agregado
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
       rol: u.rol || "cliente",
     });
     setOpenModal(true);
@@ -68,11 +95,15 @@ export default function Usuarios() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+<<<<<<< HEAD
 
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
     try {
       if (editing) {
         await api.put(`${base}${editing.id}/`, form);
       } else {
+<<<<<<< HEAD
         await api.post(base, form);
       }
 
@@ -80,18 +111,34 @@ export default function Usuarios() {
       fetchUsers();
     } catch (err) {
       console.error("Error al guardar usuario:", err);
+=======
+        await api.post(`${base}`, form);
+      }
+      setOpenModal(false);
+      fetchUsers();
+    } catch (err) {
+      console.error(err);
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
       alert("Error al guardar usuario");
     }
   };
 
   const handleDeactivate = async (u) => {
+<<<<<<< HEAD
     if (!window.confirm("¿Inactivar usuario?")) return;
 
+=======
+    if (!confirm("Inactivar usuario?")) return;
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
     try {
       await api.delete(`${base}${u.id}/`);
       fetchUsers();
     } catch (err) {
+<<<<<<< HEAD
       console.error("Error al inactivar:", err);
+=======
+      console.error(err);
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
       alert("Error al inactivar");
     }
   };
@@ -158,7 +205,26 @@ export default function Usuarios() {
         open={openModal}
         title={editing ? "Editar Usuario" : "Crear Usuario"}
         onClose={() => setOpenModal(false)}
+<<<<<<< HEAD
         footer={null}
+=======
+        footer={
+          <>
+            <button
+              onClick={() => setOpenModal(false)}
+              className="px-4 py-2 rounded bg-gray-100"
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={handleSubmit}
+              className="px-4 py-2 rounded bg-blue-600 text-white"
+            >
+              Guardar
+            </button>
+          </>
+        }
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
       >
         <form onSubmit={handleSubmit} className="space-y-3">
           <input
@@ -168,7 +234,10 @@ export default function Usuarios() {
             className="w-full px-3 py-2 border rounded"
             required
           />
+<<<<<<< HEAD
 
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
           <input
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -177,7 +246,10 @@ export default function Usuarios() {
             className="w-full px-3 py-2 border rounded"
             required
           />
+<<<<<<< HEAD
 
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
           <input
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
@@ -186,7 +258,10 @@ export default function Usuarios() {
             className="w-full px-3 py-2 border rounded"
             {...(!editing ? { required: true } : {})}
           />
+<<<<<<< HEAD
 
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
           <input
             value={form.nombre_completo}
             onChange={(e) =>
@@ -195,21 +270,42 @@ export default function Usuarios() {
             placeholder="Nombre completo"
             className="w-full px-3 py-2 border rounded"
           />
+<<<<<<< HEAD
 
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
           <input
             value={form.telefono}
             onChange={(e) => setForm({ ...form, telefono: e.target.value })}
             placeholder="Teléfono"
             className="w-full px-3 py-2 border rounded"
           />
+<<<<<<< HEAD
 
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
           <input
             value={form.direccion}
             onChange={(e) => setForm({ ...form, direccion: e.target.value })}
             placeholder="Dirección"
             className="w-full px-3 py-2 border rounded"
           />
+<<<<<<< HEAD
 
+=======
+          <input
+            value={form.calle}
+            onChange={(e) => setForm({ ...form, calle: e.target.value })}
+            placeholder="Calle"
+            className="w-full px-3 py-2 border rounded"
+          />
+          <input
+            value={form.numero}
+            onChange={(e) => setForm({ ...form, numero: e.target.value })}
+            placeholder="Número"
+            className="w-full px-3 py-2 border rounded"
+          />
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
           <select
             value={form.rol}
             onChange={(e) => setForm({ ...form, rol: e.target.value })}
@@ -219,6 +315,7 @@ export default function Usuarios() {
             <option value="empleado">Empleado</option>
             <option value="admin">Administrador</option>
           </select>
+<<<<<<< HEAD
 
           <div className="flex justify-end gap-3 pt-4">
             <button
@@ -236,6 +333,8 @@ export default function Usuarios() {
               Guardar
             </button>
           </div>
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
         </form>
       </Modal>
     </div>

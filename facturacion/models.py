@@ -17,7 +17,11 @@ class Factura(models.Model):
     observaciones = models.TextField(blank=True, null=True)
 
     def __str__(self):
+<<<<<<< HEAD
         return f"Factura #{self.cliente} - {self.cliente.nombre_completo}" 
+=======
+        return f"Factura #{self.id} - {self.cliente.usuario}"
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 
 
 class DetalleFactura(models.Model):
@@ -28,4 +32,8 @@ class DetalleFactura(models.Model):
     subtotal = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
+<<<<<<< HEAD
         return f"{self.medicamento.nombre} ({self.cantidad})"
+=======
+        return f"{self.medicamento.nom_med} ({self.cantidad})"
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a

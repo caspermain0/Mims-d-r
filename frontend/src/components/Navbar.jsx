@@ -14,11 +14,14 @@ export default function Navbar() {
     navigate("/login");
   };
 
+<<<<<<< HEAD
   // Si es empleado o cliente logueado, no mostrar navbar
   if (token && (usuario.rol === "empleado" || usuario.rol === "cliente")) {
     return null;
   }
 
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
   return (
     <nav className="bg-blue-700 text-white px-8 py-4 flex justify-between items-center shadow-md sticky top-0 z-50">
       {/* Logo y nombre */}
@@ -41,6 +44,7 @@ export default function Navbar() {
         <Link to="/contacto" className="hover:text-pink-200 transition">
           Contacto
         </Link>
+<<<<<<< HEAD
         <Link to="/catalogo" className="hover:text-pink-200 transition">
           Catálogo
         </Link>
@@ -50,6 +54,19 @@ export default function Navbar() {
           <Link to="/mensajes" className="hover:text-pink-200 transition">
             Mensajes
           </Link>
+=======
+
+        {/* Solo visible si el usuario es admin */}
+        {usuario.rol === "admin" && (
+          <>
+            <Link to="/mensajes" className="hover:text-pink-200 transition">
+              Mensajes
+            </Link>
+            <Link to="/usuarios" className="hover:text-pink-200 transition">
+              Usuarios
+            </Link>
+          </>
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
         )}
       </div>
 

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { getMedicamentos, crearMedicamento, actualizarMedicamento, eliminarMedicamento } from "../services/inventarioServices";
+<<<<<<< HEAD
 import "../styles/empleadoDashboard.css";
+=======
+import "../styles/medicamentos.css";
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 
 const MedicamentosEmpleado = () => {
   const [medicamentos, setMedicamentos] = useState([]);

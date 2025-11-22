@@ -20,7 +20,11 @@ class UsuarioAdmin(UserAdmin):
                 'nombre_completo',
                 'email',
                 'telefono',
+<<<<<<< HEAD
                 'direccion',
+=======
+                'direccion_completa',
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
             )
         }),
         ('Rol y permisos', {

@@ -2,6 +2,7 @@
 import API from "./api.js";
 
 /* ===============================
+<<<<<<< HEAD
 // 🧩 CATEGORÍAS CON MEDICAMENTOS ANIDADOS (público)
 ================================= */
 export const getCategoriasConMedicamentos = async () => {
@@ -9,6 +10,22 @@ export const getCategoriasConMedicamentos = async () => {
   return res.data;
 };
 
+=======
+   📦 CATALOGO PÚBLICO (sin token)
+================================= */
+export const getCatalogoPublico = async () => {
+  const res = await API.get("/inventario/catalogo/");
+  return res.data;
+};
+
+/* ===============================
+   📚 CATEGORÍAS
+================================= */
+export const getCategorias = async () => {
+  const res = await API.get("/inventario/categorias/");
+  return res.data;
+};
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 
 /* ===============================
    💊 MEDICAMENTOS (CRUD protegido)
@@ -32,4 +49,7 @@ export const eliminarMedicamento = async (id) => {
   const res = await API.delete(`/inventario/medicamentos/${id}/`);
   return res.data;
 };
+<<<<<<< HEAD
 
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import { User, Edit, ShoppingBag } from "lucide-react";
 
 export default function PerfilCliente() {
@@ -9,16 +10,35 @@ export default function PerfilCliente() {
   const [editMode, setEditMode] = useState(false);
   const [facturas, setFacturas] = useState([]);
   const [loading, setLoading] = useState(true);
+=======
+import { User, Edit, ShoppingBag, Save } from "lucide-react";
+
+export default function PerfilCliente() {
+  const [usuario, setUsuario] = useState(null);
+  const [facturas, setFacturas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editando, setEditando] = useState(false);
+  const [datosEdit, setDatosEdit] = useState({});
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
+<<<<<<< HEAD
+=======
+        if (!token) {
+          navigate("/login");
+          return;
+        }
+
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
         const config = { headers: { Authorization: `Bearer ${token}` } };
 
         const perfilRes = await axios.get("http://localhost:8000/api/usuarios/perfil/", config);
         setUsuario(perfilRes.data);
+<<<<<<< HEAD
         setFormData(perfilRes.data);
 
         const facturasRes = await axios.get(
@@ -29,6 +49,17 @@ export default function PerfilCliente() {
       } catch (error) {
         console.error("Error al cargar perfil:", error);
         navigate("/login");
+=======
+
+        const facturasRes = await axios.get("http://localhost:8000/api/facturas/historial/", config);
+        setFacturas(facturasRes.data);
+      } catch (error) {
+        console.error("Error al cargar perfil:", error);
+        if (error.response?.status === 401) {
+          localStorage.removeItem("token");
+          navigate("/login");
+        }
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
       } finally {
         setLoading(false);
       }
@@ -37,16 +68,29 @@ export default function PerfilCliente() {
     fetchData();
   }, [navigate]);
 
+<<<<<<< HEAD
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+=======
+  // Manejar cambios en el formulario de edición
+  const handleChange = (e) => {
+    setDatosEdit({
+      ...datosEdit,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // Guardar cambios
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
   const guardarCambios = async () => {
     try {
       const token = localStorage.getItem("token");
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
+<<<<<<< HEAD
      const res = await axios.put(
        `http://localhost:8000/api/usuarios/editar-usuario/${usuario.id}/`,
        formData,
@@ -60,6 +104,18 @@ export default function PerfilCliente() {
     } catch (error) {
       console.error("Error actualizando perfil:", error);
       alert("Error al actualizar perfil");
+=======
+      // ✅ URL CORREGIDA
+      const res = await axios.put("http://localhost:8000/api/usuarios/perfil/editar/", datosEdit, config);
+
+      // Actualizar estado local
+      setUsuario(res.data);
+      setEditando(false);
+      alert("Perfil actualizado correctamente.");
+    } catch (error) {
+      console.error("Error al actualizar perfil:", error);
+      alert("Error al actualizar perfil.");
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
     }
   };
 
@@ -74,13 +130,18 @@ export default function PerfilCliente() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-white flex items-center justify-center p-8">
       <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl w-full max-w-5xl p-8">
+<<<<<<< HEAD
         {/* Encabezado del perfil */}
+=======
+        {/* 🔹 Encabezado del perfil */}
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
         <div className="flex items-center justify-between border-b pb-6 mb-6">
           <div className="flex items-center gap-5">
             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center shadow-lg">
               <User className="text-white" size={40} />
             </div>
             <div>
+<<<<<<< HEAD
               {editMode ? (
                 <input
                   type="text"
@@ -161,6 +222,103 @@ export default function PerfilCliente() {
         </div>
 
         {/* Historial de compras */}
+=======
+              <h2 className="text-2xl font-bold text-blue-800">
+                {usuario?.nombre_completo || usuario?.username}
+              </h2>
+              <p className="text-gray-500">{usuario?.email}</p>
+            </div>
+          </div>
+          <button
+            className="bg-blue-500 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-600 flex items-center gap-2 transition"
+            onClick={() => {
+              if (editando) {
+                guardarCambios();
+              } else {
+                setEditando(true);
+                setDatosEdit({
+                  nombre_completo: usuario?.nombre_completo || "",
+                  telefono: usuario?.telefono || "",
+                  direccion: usuario?.direccion_completa || "",
+                  email: usuario?.email || "",
+                });
+              }
+            }}
+          >
+            {editando ? <Save size={18} /> : <Edit size={18} />}
+            {editando ? "Guardar" : "Editar"}
+          </button>
+        </div>
+
+        {/* 🔹 Información del usuario */}
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+          {editando ? (
+            <>
+              <div>
+                <label className="block text-sm text-gray-500">Nombre completo</label>
+                <input
+                  type="text"
+                  name="nombre_completo"
+                  value={datosEdit.nombre_completo || ""}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-500">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={datosEdit.email || ""}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-500">Teléfono</label>
+                <input
+                  type="text"
+                  name="telefono"
+                  value={datosEdit.telefono || ""}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-500">Dirección</label>
+                <input
+                  type="text"
+                  name="direccion"
+                  value={datosEdit.direccion || ""}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded-lg"
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <label className="block text-sm text-gray-500">Usuario</label>
+                <p className="text-gray-800 font-medium">{usuario?.username}</p>
+              </div>
+              <div>
+                <label className="block text-sm text-gray-500">Rol</label>
+                <p className="text-gray-800 font-medium">{usuario?.rol}</p>
+              </div>
+              <div>
+                <label className="block text-sm text-gray-500">Teléfono</label>
+                <p className="text-gray-800 font-medium">{usuario?.telefono || "—"}</p>
+              </div>
+              <div>
+                <label className="block text-sm text-gray-500">Dirección</label>
+                <p className="text-gray-800 font-medium">{usuario?.direccion_completa || "—"}</p>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* 🧾 HISTORIAL DE COMPRAS (facturas) */}
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
         <div>
           <h3 className="text-xl font-semibold text-green-700 mb-4 flex items-center gap-2">
             <ShoppingBag size={22} /> Historial de Compras
@@ -204,4 +362,8 @@ export default function PerfilCliente() {
       </div>
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a

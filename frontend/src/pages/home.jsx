@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react"; 
+=======
+import React, { useEffect, useState } from "react";
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 import { motion } from "framer-motion";
 import axios from "axios";
 
 export default function Home() {
   const [productos, setProductos] = useState([]);
+<<<<<<< HEAD
   const [categorias, setCategorias] = useState([]);
   const [carrito, setCarrito] = useState([]);
   const [carritoOpen, setCarritoOpen] = useState(false);
@@ -40,6 +45,56 @@ export default function Home() {
       return;
     }
 
+=======
+  const [carrito, setCarrito] = useState([]);
+  const [carritoOpen, setCarritoOpen] = useState(false);
+  const [usuario, setUsuario] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // ============================
+  // 🔐 Obtener TOKEN si existe
+  // ============================
+  const token = localStorage.getItem("token");
+
+  // ============================
+  // 🔍 Verificar rol del usuario
+  // ============================
+  useEffect(() => {
+    if (token) {
+      axios
+        .get("http://127.0.0.1:8000/api/usuarios/perfil/", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => setUsuario(res.data))
+        .catch((err) => {
+          console.error("Error obteniendo perfil:", err);
+          if (err.response?.status === 401) {
+            localStorage.removeItem("token");
+          }
+        });
+    }
+  }, [token]);
+
+  const API_PEDIDOS = "http://127.0.0.1:8000/api/pedidos/crud/";
+
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/api/inventario/catalogo/")
+      .then((res) => {
+        setProductos(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error al cargar medicamentos:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  // ============================
+  // ➕ Agregar medicamento al carrito
+  // ============================
+  const agregarAlCarrito = (producto) => {
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
     const existe = carrito.find((p) => p.id === producto.id);
     if (existe) {
       setCarrito(
@@ -52,14 +107,27 @@ export default function Home() {
     }
   };
 
+<<<<<<< HEAD
   const reducirCantidad = (id) => {
     setCarrito(
       carrito
         .map((p) => (p.id === id ? { ...p, cantidad: p.cantidad - 1 } : p))
+=======
+  // ============================
+  // ➖ Reducir cantidad
+  // ============================
+  const reducirCantidad = (id) => {
+    setCarrito(
+      carrito
+        .map((p) =>
+          p.id === id ? { ...p, cantidad: p.cantidad - 1 } : p
+        )
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
         .filter((p) => p.cantidad > 0)
     );
   };
 
+<<<<<<< HEAD
   const eliminar = (id) => setCarrito(carrito.filter((p) => p.id !== id));
 
   const enviarPedido = async () => {
@@ -70,11 +138,25 @@ export default function Home() {
 
     if (!carrito.length) return alert("El carrito está vacío");
 
+=======
+  // ============================
+  // 🗑 Eliminar producto
+  // ============================
+  const eliminar = (id) =>
+    setCarrito(carrito.filter((p) => p.id !== id));
+
+  // ============================
+  // 📨 ENVIAR PEDIDO (con token)
+  // ============================
+  const enviarPedido = async () => {
+    if (!carrito.length) return alert("El carrito está vacío");
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
     const detalles = carrito.map((p) => ({
       medicamento: p.id,
       cantidad: p.cantidad,
       subtotal: p.precio_venta * p.cantidad,
     }));
+<<<<<<< HEAD
 
     const total = detalles.reduce((t, d) => t + d.subtotal, 0);
 
@@ -87,6 +169,16 @@ export default function Home() {
           detalles,
         },
         { headers: { Authorization: `Bearer ${token}` } }
+=======
+    const total = detalles.reduce((t, d) => t + d.subtotal, 0);
+    try {
+      await axios.post(
+        API_PEDIDOS,
+        { cliente: 1, total, detalles },
+        {
+          headers: { Authorization: token ? `Bearer ${token}` : "" },
+        }
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
       );
       alert("Pedido enviado correctamente");
       setCarrito([]);
@@ -96,6 +188,7 @@ export default function Home() {
     }
   };
 
+<<<<<<< HEAD
   // ==========================
   // Filtrado de productos
   // ==========================
@@ -113,6 +206,44 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex flex-col">
       {/* Bienvenida / banner */}
+=======
+  // ============================
+  // 🖼️ Mostrar imagen correcta (usando solo 'imagen')
+  // ============================
+  const BACKEND_URL = process.env.VITE_API_URL || "http://127.0.0.1:8000";
+
+  const obtenerImagen = (producto) => {
+    // producto.imagen puede venir como:
+    // - URL absoluta (http...)
+    // - ruta relativa comenzando con '/' (p.ej. '/media/...')
+    // - solo nombre/parte relativa ('media/medicamentos/..')
+    if (!producto?.imagen) return "/placeholder.png";
+    const img = producto.imagen;
+    if (img.startsWith("http://") || img.startsWith("https://")) return img;
+    if (img.startsWith("/")) return `${BACKEND_URL}${img}`;
+    return `${BACKEND_URL}/${img}`;
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex flex-col">
+      {/* ✅ Barra superior para admin/empleado */}
+      {usuario && (usuario.rol === "admin" || usuario.rol === "empleado") && (
+        <div className="bg-blue-800 text-white p-3 text-center">
+          <p>
+            Panel de {usuario.rol === "admin" ? "Administrador" : "Empleado"}:{" "}
+            <strong>{usuario.nombre_completo || usuario.username}</strong>
+          </p>
+          <button
+            onClick={() => (window.location.href = "/panel-admin")}
+            className="mt-2 px-4 py-1 bg-white text-blue-800 rounded hover:bg-gray-100 transition-colors"
+          >
+            Ir al Panel
+          </button>
+        </div>
+      )}
+
+      {/* Sección bienvenida */}
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
       <motion.div
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -125,6 +256,7 @@ export default function Home() {
         <p className="text-gray-700 max-w-xl mx-auto">
           Compra medicamentos de calidad con atención personalizada y entrega rápida.
         </p>
+<<<<<<< HEAD
         {!token && (
           <p className="mt-2 text-red-600 font-semibold">
             Debes iniciar sesión para agregar productos al pedido.
@@ -177,6 +309,10 @@ export default function Home() {
         />
       </div>
 
+=======
+      </motion.div>
+
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
       {/* Catálogo */}
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-6 pb-10"
@@ -184,14 +320,22 @@ export default function Home() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 1 }}
       >
+<<<<<<< HEAD
         {productosFiltrados.length > 0 ? (
           productosFiltrados.map((p) => (
+=======
+        {loading ? (
+          <p className="text-gray-600 text-lg col-span-3 text-center">Cargando medicamentos...</p>
+        ) : productos.length > 0 ? (
+          productos.map((p) => (
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
             <motion.div
               key={p.id}
               whileHover={{ scale: 1.05 }}
               className="bg-white shadow-md rounded-2xl p-6 border hover:shadow-xl transition-all"
             >
               <img
+<<<<<<< HEAD
                 src={p.imagen_url || "/placeholder.png"}
                 alt={p.nombre}
                 className="w-full h-48 object-contain mb-4 rounded-lg"
@@ -203,6 +347,28 @@ export default function Home() {
               </p>
               <button
                 className="mt-3 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+=======
+                src={obtenerImagen(p)}
+                alt={p.nombre}
+                className="w-full h-48 object-contain mb-4 rounded-lg"
+                onError={(e) => (e.target.src = "/placeholder.png")}
+              />
+              <h3 className="text-lg font-semibold text-gray-800">{p.nombre}</h3>
+              
+              {/* ✅ Descripción sin repetir el nombre */}
+              <p className="text-gray-500 text-sm mt-1">
+                {p.descripcion
+                  ? p.descripcion.replace(p.nombre, "").replace(/[-–—]/g, "").trim()
+                  : "Sin descripción"}
+              </p>
+
+              <p className="mt-3 text-lg font-bold text-green-600">
+                ${p.precio_venta?.toLocaleString("es-CO")}
+              </p>
+
+              <button
+                className="mt-3 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
                 onClick={() => agregarAlCarrito(p)}
               >
                 ➕ Agregar al pedido
@@ -210,9 +376,13 @@ export default function Home() {
             </motion.div>
           ))
         ) : (
+<<<<<<< HEAD
           <p className="text-gray-600 text-lg col-span-3">
             No hay medicamentos para mostrar...
           </p>
+=======
+          <p className="text-gray-600 text-lg col-span-3 text-center">No hay medicamentos disponibles</p>
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
         )}
       </motion.div>
 
@@ -224,6 +394,7 @@ export default function Home() {
       >
         <h3 className="text-xl font-bold mb-4">🛒 Carrito</h3>
 
+<<<<<<< HEAD
         {carrito.map((p) => (
           <div key={p.id} className="border-b pb-3 mb-3">
             <p className="font-semibold">{p.nombre}</p>
@@ -253,15 +424,69 @@ export default function Home() {
           >
             📦 Enviar pedido
           </button>
+=======
+        {carrito.length === 0 ? (
+          <p className="text-gray-500">No hay productos en el carrito</p>
+        ) : (
+          <>
+            {carrito.map((p) => (
+              <div key={p.id} className="border-b pb-3 mb-3">
+                <p className="font-semibold">{p.nombre}</p>
+                <p className="text-sm text-gray-600">Cantidad: {p.cantidad}</p>
+                <p className="text-sm text-gray-600">Subtotal: ${(p.precio_venta * p.cantidad).toLocaleString("es-CO")}</p>
+
+                <div className="flex gap-2 mt-2">
+                  <button 
+                    className="bg-gray-300 px-3 py-1 rounded hover:bg-gray-400 transition-colors"
+                    onClick={() => reducirCantidad(p.id)}
+                  >
+                    -
+                  </button>
+                  <button 
+                    className="bg-gray-300 px-3 py-1 rounded hover:bg-gray-400 transition-colors"
+                    onClick={() => agregarAlCarrito(p)}
+                  >
+                    +
+                  </button>
+                  <button
+                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition-colors"
+                    onClick={() => eliminar(p.id)}
+                  >
+                    🗑
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            <div className="mt-4 pt-4 border-t">
+              <p className="text-lg font-bold">
+                Total: ${carrito.reduce((t, p) => t + (p.precio_venta * p.cantidad), 0).toLocaleString("es-CO")}
+              </p>
+              <button
+                className="w-full bg-green-600 text-white py-2 rounded mt-2 hover:bg-green-700 transition-colors"
+                onClick={enviarPedido}
+              >
+                📦 Enviar pedido
+              </button>
+            </div>
+          </>
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
         )}
       </div>
 
       {/* Botón carrito */}
       <button
+<<<<<<< HEAD
         className="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-lg"
         onClick={() => setCarritoOpen(!carritoOpen)}
       >
         🛒
+=======
+        className="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-colors"
+        onClick={() => setCarritoOpen(!carritoOpen)}
+      >
+        🛒 ({carrito.length})
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
       </button>
 
       {/* Footer */}
@@ -270,4 +495,8 @@ export default function Home() {
       </footer>
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a

@@ -31,7 +31,11 @@ class Medicamento(models.Model):
     stock_minimo = models.PositiveIntegerField(default=10)
     fecha_vencimiento = models.DateField(null=True, blank=True)
     estado = models.BooleanField(default=True)
+<<<<<<< HEAD
     imagen_url = models.CharField(max_length=500, blank=True, null=True)
+=======
+    imagen = models.ImageField(upload_to='medicamentos/', blank=True, null=True)  # 🟡 Nuevo campo para imágenes
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 
     def __str__(self):
         return self.nombre

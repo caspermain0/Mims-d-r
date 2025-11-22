@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 # usuarios/views.py
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 import uuid
 from django.core.mail import send_mail
 from django.conf import settings
@@ -39,17 +42,36 @@ class LoginUsuarioView(APIView):
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
+<<<<<<< HEAD
+=======
+
+        # Validación de campos requeridos
+        if not username or not password:
+            return Response(
+                {"error": "Debes proporcionar un nombre de usuario y contraseña."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
         usuario = authenticate(username=username, password=password)
 
         if usuario:
             refresh = RefreshToken.for_user(usuario)
             return Response({
                 "usuario": {
+<<<<<<< HEAD
                     "id": usuario.id,
                     "username": usuario.username,
                     "nombre_completo": usuario.nombre_completo,
                     "email": usuario.email,
                     "rol": usuario.rol,
+=======
+                    "id": usuario.id, # type: ignore
+                    "username": usuario.username,
+                    "nombre_completo": getattr(usuario, 'nombre_completo', ""),
+                    "email": usuario.email,
+                    "rol": usuario.rol, # type: ignore
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
                 },
                 "token": str(refresh.access_token),
                 "refresh": str(refresh)
@@ -72,9 +94,42 @@ def perfil_usuario(request):
         "username": usuario.username,
         "email": usuario.email,
         "rol": usuario.rol,
+<<<<<<< HEAD
         "nombre_completo": usuario.nombre_completo,
         "telefono": usuario.telefono,
         "direccion": usuario.direccion,
+=======
+        "nombre_completo": getattr(usuario, 'nombre_completo', ""),
+        "telefono": getattr(usuario, 'telefono', ""),
+        "direccion_completa": getattr(usuario, 'direccion_completa', ""),
+    })
+
+
+# =========================
+# Actualizar perfil del usuario logueado
+# =========================
+@api_view(['PUT'])
+@permission_classes([permissions.IsAuthenticated])
+def actualizar_perfil(request):
+    usuario = request.user
+
+    # Permitir actualizar solo ciertos campos
+    usuario.nombre_completo = request.data.get('nombre_completo', usuario.nombre_completo)
+    usuario.telefono = request.data.get('telefono', usuario.telefono)
+    usuario.direccion_completa = request.data.get('direccion', usuario.direccion_completa)
+    usuario.email = request.data.get('email', usuario.email)
+
+    usuario.save()
+
+    return Response({
+        "id": usuario.id,
+        "username": usuario.username,
+        "email": usuario.email,
+        "rol": usuario.rol,
+        "nombre_completo": getattr(usuario, 'nombre_completo', ""),
+        "telefono": getattr(usuario, 'telefono', ""),
+        "direccion_completa": getattr(usuario, 'direccion_completa', ""),
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
     })
 
 
@@ -95,6 +150,7 @@ class UsuarioViewSet(viewsets.ModelViewSet):
         """Permitir actualizar datos de usuario."""
         serializer.save()
 
+<<<<<<< HEAD
     def update(self, request, pk=None):
         try:
             usuario = Usuario.objects.get(pk=pk)
@@ -111,6 +167,8 @@ class UsuarioViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+=======
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 
 # =========================
 # CRUD de Roles
@@ -118,7 +176,11 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 class RolViewSet(viewsets.ModelViewSet):
     queryset = Rol.objects.all()
     serializer_class = RolSerializer
+<<<<<<< HEAD
     permission_classes = [permissions.AllowAny]
+=======
+    permission_classes = [permissions.IsAuthenticated]
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 
     def perform_destroy(self, instance):
         """Inactivar en lugar de eliminar."""
@@ -196,4 +258,8 @@ def cambiar_contrasena(request):
     usuario.cod_recuperacion = None
     usuario.save()
 
+<<<<<<< HEAD
     return Response({"mensaje": "Contraseña cambiada correctamente."}, status=200)
+=======
+    return Response({"mensaje": "Contraseña cambiada correctamente."}, status=200)
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a

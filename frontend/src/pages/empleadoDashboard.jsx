@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import MedicamentosEmpleado from "../pages/medicamentosEmpleado";
@@ -34,6 +35,20 @@ export default function EmpleadoDashboard() {
         setSeccion={setSeccionActual}
         secciones={secciones} // enviamos las secciones con iconos
       />
+=======
+import Sidebar from "../components/Sidebar";
+import MedicamentosEmpleado from "../pages/MedicamentosEmpleado";
+import PanelFactura from "../pages/PanelFactura";
+import PanelPedidos from "../pages/PanelPedidos";
+import "../styles/empleadoDashboard.css";
+
+export default function EmpleadoDashboard() {
+  const [seccionActual, setSeccionActual] = useState("medicamentos");
+
+  return (
+    <div className="dashboard-container">
+      <Sidebar seccionActual={seccionActual} setSeccion={setSeccionActual} />
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 
       <div className="dashboard-content">
         {seccionActual === "medicamentos" && <MedicamentosEmpleado />}

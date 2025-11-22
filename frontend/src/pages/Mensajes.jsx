@@ -39,8 +39,13 @@ export default function Mensajes() {
     try {
       const nuevaResena = {
         nombre: msg.nombre,
+<<<<<<< HEAD
         comentario: msg.mensaje, // 👈 Campo correcto según el modelo Django (Resena.comentario)
         calificacion: 5, // Puedes hacerlo dinámico si lo deseas
+=======
+        comentario: msg.mensaje, // ✅ Campo correcto
+        calificacion: 5,         // Puedes hacerlo dinámico si lo deseas
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
       };
 
       console.log("📤 Enviando reseña:", nuevaResena);
@@ -122,4 +127,8 @@ export default function Mensajes() {
       )}
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a

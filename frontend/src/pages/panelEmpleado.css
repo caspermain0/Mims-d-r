@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* ================================
    🔵 CONTENEDOR PRINCIPAL
 ================================ */
@@ -40,11 +41,36 @@
   padding: 20px;
   border-radius: 12px;
   border: 1px solid #e3e7f1;
+=======
+.panel-container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.titulo {
+  text-align: center;
+  color: #1d4ed8;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.factura-form {
+  background: #f9fafb;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 }
 
 .campo {
   display: flex;
   flex-direction: column;
+<<<<<<< HEAD
   margin-bottom: 18px;
 }
 
@@ -52,22 +78,39 @@
   font-weight: 600;
   color: #444;
   margin-bottom: 6px;
+=======
+  margin-bottom: 15px;
+}
+
+.campo label {
+  font-weight: bold;
+  color: #374151;
+  margin-bottom: 5px;
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 }
 
 .campo input,
 .campo select,
 .campo textarea {
   padding: 10px;
+<<<<<<< HEAD
   border: 1px solid #ccd3df;
   border-radius: 8px;
   font-size: 14px;
   transition: all 0.2s ease-in-out;
   background: #fff;
+=======
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 }
 
 .campo input:focus,
 .campo select:focus,
 .campo textarea:focus {
+<<<<<<< HEAD
   border-color: #0077ff;
   box-shadow: 0 0 4px rgba(0, 119, 255, 0.2);
   outline: none;
@@ -76,11 +119,25 @@
 /* ================================
    🔵 DETALLES DE FACTURA
 ================================ */
+=======
+  border-color: #2563eb;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.3);
+}
+
+.subtitulo {
+  margin-top: 25px;
+  font-size: 1.5rem;
+  color: #1d4ed8;
+  font-weight: bold;
+}
+
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 .detalle-row {
   display: flex;
   align-items: center;
   gap: 12px;
   margin: 10px 0;
+<<<<<<< HEAD
   background: #f0f5ff;
   padding: 12px;
   border-radius: 10px;
@@ -90,11 +147,17 @@
 
 .detalle-row:hover {
   background: #e9f1ff;
+=======
+  background: #eef4ff;
+  padding: 10px;
+  border-radius: 8px;
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 }
 
 .detalle-row select,
 .detalle-row input {
   padding: 8px;
+<<<<<<< HEAD
   border-radius: 8px;
   border: 1px solid #c9d5e8;
   transition: all 0.2s ease;
@@ -104,10 +167,15 @@
 .detalle-row select:focus,
 .detalle-row input:focus {
   border-color: #0077ff;
+=======
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 }
 
 .precio,
 .subtotal {
+<<<<<<< HEAD
   font-weight: 600;
   color: #333;
 }
@@ -119,21 +187,41 @@
   margin-top: 15px;
   padding: 10px 18px;
   background: #28a745;
+=======
+  font-weight: bold;
+  color: #374151;
+}
+
+.btn-agregar {
+  margin-top: 10px;
+  padding: 12px 18px;
+  background: #22c55e;
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
   color: white;
   border: none;
   border-radius: 10px;
   cursor: pointer;
+<<<<<<< HEAD
   font-weight: 600;
   transition: 0.2s;
 }
 
 .btn-agregar:hover {
   background: #218838;
+=======
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.btn-agregar:hover {
+  background: #16a34a;
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 }
 
 .btn-eliminar {
   background: transparent;
   border: none;
+<<<<<<< HEAD
   color: #d64545;
   cursor: pointer;
   font-size: 20px;
@@ -144,18 +232,30 @@
 .btn-eliminar:hover {
   color: #a82323;
   transform: scale(1.2);
+=======
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 1.2rem;
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 }
 
 .total {
   text-align: right;
+<<<<<<< HEAD
   font-size: 20px;
   font-weight: 700;
   margin: 25px 0;
   color: #333;
+=======
+  font-size: 1.5rem;
+  margin: 20px 0;
+  font-weight: bold;
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 }
 
 .btn-registrar {
   width: 100%;
+<<<<<<< HEAD
   padding: 14px;
   background: #0069d9;
   color: white;
@@ -184,4 +284,26 @@
   background: #e8f0ff;
   color: #004a99;
   border: 1px solid #bcd2ff;
+=======
+  padding: 15px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.btn-registrar:hover {
+  background: #1d4ed8;
+}
+
+.mensaje {
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bold;
+  color: #16a34a;
+>>>>>>> 447bebc4543953f91b364b1d02bdfff52c66246a
 }
