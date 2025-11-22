@@ -1,0 +1,85 @@
+# Entornos virtuales de Python
+.venv/
+venv/
+env/
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos de compilación y cache de Python
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Archivos de logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Archivos de base de datos SQLite
+db.sqlite3
+*.db
+
+# Archivos de configuración local
+.env
+.env.local
+.env.*.local
+
+# Archivos de sesión de IPython
+.ipynb_checkpoints
+
+# Carpetas y archivos de frontend (Vite, npm, etc.)
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+frontend/.svelte-kit/
+frontend/cypress/downloads/
+frontend/.npm/
+
+# Archivos generados por dependencias frontend
+package-lock.json # Opcional: a veces se incluye, a veces no. Si no lo incluyes, coméntalo.
+yarn.lock
+pnpm-lock.yaml
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Carpetas de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Carpetas de pruebas
+.coverage
+htmlcov/
+.pytest_cache/
+.hypothesis/
+
+# Otros archivos temporales o innecesarios
+*.zip
+*.tar.gz
+*.rar
+.DS_Store
